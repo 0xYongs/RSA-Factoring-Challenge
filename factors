@@ -1,33 +1,26 @@
 #!/usr/bin/python3
-from sys import argv
+import sys
 import math
 '''Factorize as many numbers possible into a product of 2 smaller numbers'''
 
-def factory(num):
-	'''gets the fators of a number'''
-	if num % 2 == 0:
-		i = 2
-		print("{}={}*{}".format(num, int(num//i), i))
-	else:
-		sq = int(math.sqrt(num)) + 1
-		for i in range (3, sq, +2):
-			if num % i == 0:
-		        	print("{}={}*{}".format(num, sq + 1, int(num//i), i))
-			return
-	
-			if num % (sq + i) == 0:
-				print("{}={}*{}".format(num, sq + i, int(num//(sq + i))))
-			return
-			if num % (sq - i) == 0:
-				print("{}={}*{}".format(num, sq - 1, int(num//(sq - i))))
-			return
+try:
+    file_object = open(sys.argv[1], "r")
+except IndexError:
+    print("Usage: ./factors <file>")
+    exit()
 
-def factors(filename):
-	'''read file and prints them out'''
-	with open(filename, encoding="utf-8") as my_file:
-		for i in my_file.readlines():
-			n = int(i)
-			result = factory(n)
+numbers = file_object.readlines()
+file_object.close()
 
-if __name__ == "__main__":
-	factors(argv[1])
+for num in numbers:
+    number = int(num.rstrip("\n"))
+    for i in range(2, int(math.sqrt(number)) + 1):
+        if number % i == 0:
+            q = i
+            break
+    for j in range(2, int(math.sqrt(number)) + 1):
+        if (number // i) * q == number:
+            p = number // i
+            break
+
+    print("{}={}*{}".format(number, p, q))
